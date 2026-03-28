@@ -1,0 +1,490 @@
+/* ============================================================
+   ROLLS-ROYCE ENGINE EXPERIENCE
+   Premium Cinematic Scroll — Minimal Floating Typography
+   ============================================================ */
+
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&display=swap');
+
+/* ---------- Custom Properties ---------- */
+:root {
+  --white: #ffffff;
+  --light: #e1e1e1;
+  --muted: #a0a0a0;
+  --dim: rgba(255,255,255,0.45);
+  --bg: #000000;
+  --accent: #d4af37; /* Refined Gold */
+  --accent-light: #f3dca0;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --ease-smooth: cubic-bezier(0.25,0.1,0.25,1);
+  --ease-out: cubic-bezier(0.16,1,0.3,1);
+
+  /* Deep shadows for floating text readability without background boxes */
+  --text-shadow-hero: 0 4px 50px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.7);
+  --text-shadow-display: 0 6px 40px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.8);
+  --text-shadow-body: 0 4px 25px rgba(0,0,0,0.9), 0 1px 15px rgba(0,0,0,0.9);
+}
+
+/* ---------- Reset ---------- */
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  line-height: 1.6;
+  overscroll-behavior: none;
+  cursor: none; /* Hide default for custom cursor */
+}
+
+/* Fallback if custom cursor lacks JS pointer events none */
+a, button { cursor: none; }
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+#cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  background-color: var(--accent-light);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  box-shadow: 0 0 10px var(--accent);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+#cursor-follower {
+  position: fixed;
+  top: 0; left: 0;
+  width: 34px; height: 34px;
+  border: 1px solid rgba(212, 175, 55, 0.5); /* Gold */
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 99999;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+  transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), background-color 0.4s ease;
+}
+
+/* Hover States for Interactive Elements */
+.cursor-hover #cursor { opacity: 0; }
+.cursor-hover #cursor-follower {
+  width: 50px; height: 50px;
+  background-color: rgba(212, 175, 55, 0.1);
+  border-color: var(--accent);
+  backdrop-filter: blur(2px);
+}
+
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+#loader {
+  position: fixed; inset:0; z-index:90000;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background: var(--bg);
+  transition: opacity 0.8s var(--ease-smooth), visibility 0.8s;
+}
+#loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+
+.loader-brand {
+  font-family: var(--font-display);
+  font-size: clamp(1rem,2.5vw,1.5rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 3rem;
+}
+
+.loader-bar-wrapper {
+  width: min(320px,70vw); height:2px;
+  background: rgba(255,255,255,0.08);
+  border-radius:999px; overflow:hidden;
+}
+
+.loader-bar-fill {
+  height:100%; width:0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  transition: width 0.3s var(--ease-smooth);
+}
+
+.loader-percentage {
+  font-size:0.8rem; font-weight:300;
+  letter-spacing:0.2em; color:var(--muted);
+  margin-top:1.5rem;
+}
+
+.loader-subtitle {
+  font-size:0.65rem; font-weight:300;
+  letter-spacing:0.5em; text-transform:uppercase;
+  color: var(--dim); margin-top:2.5rem;
+}
+
+/* ============================================================
+   SCROLL PROGRESS
+   ============================================================ */
+#scroll-progress {
+  position:fixed; top:0; left:0;
+  width:0%; height:3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  z-index:9000;
+  box-shadow: 0 0 10px rgba(212,175,55,0.5);
+}
+
+/* ============================================================
+   STATIC SECTIONS (Pre & Post Animation)
+   ============================================================ */
+.static-section {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  z-index: 10; /* Above the sticky track */
+  padding: 4rem 2rem;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.scroll-hint-text {
+  font-size: 0.65rem; font-weight: 500;
+  letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--muted);
+}
+
+.scroll-hint-line {
+  width: 1px; height: 50px;
+  position: relative; overflow: hidden;
+}
+.scroll-hint-line::after {
+  content:''; position: absolute; top:-100%; left:0; width:100%; height:100%;
+  background: linear-gradient(to bottom, transparent, var(--accent));
+  animation: scrollPulse 2s var(--ease-smooth) infinite;
+}
+
+/* Footer Section */
+.footer-content {
+  text-align: center;
+  max-width: 800px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* ============================================================
+   ANIMATION TRACK (Scrolljacking space)
+   ============================================================ */
+.animation-track {
+  position: relative;
+  width: 100vw;
+  /* height set by JS (e.g. 1400vh) */
+  z-index: 1; 
+  background: var(--bg);
+}
+
+.animation-sticky {
+  position: sticky;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  overflow: hidden;
+}
+
+/* CANVAS */
+#frame-canvas {
+  position: absolute; top:0; left:0;
+  width:100%; height:100%;
+  z-index: 1; 
+}
+
+#vignette {
+  position: absolute; inset:0; z-index: 2; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.7) 100%);
+}
+
+/* OVERLAYS */
+.content-section {
+  position: absolute; inset:0; z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  /* opacity controlled entirely by JS inline style */
+}
+
+/* Inner alignment */
+.section-inner {
+  width: 100%; max-width: 1300px;
+  padding: 2rem clamp(1.5rem, 5vw, 4rem);
+  display: flex; justify-content: center;
+}
+.section-inner--left  { justify-content: flex-start; }
+.section-inner--right { justify-content: flex-end; }
+
+/* ============================================================
+   FLOATING TEXT (No more dark boxes)
+   ============================================================ */
+.floating-text {
+  transform: translateY(20px);
+  transition: transform 0.8s var(--ease-out);
+  max-width: 580px;
+}
+
+.content-section[style*="opacity: 1"],
+.content-section.visible { /* JS appends visible when opacity > 0.05 */
+  .floating-text {
+    transform: translateY(0);
+  }
+}
+
+.floating-text--center {
+  text-align: center;
+  max-width: 700px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+/* Eyebrow label */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 1.1vw, 0.8rem);
+  font-weight: 600;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  text-shadow: var(--text-shadow-hero);
+}
+.eyebrow--hero { margin-bottom: 1.5rem; }
+
+/* Main heading — XL */
+.heading-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.05;
+  color: var(--white);
+  text-transform: uppercase;
+  text-shadow: var(--text-shadow-hero);
+  margin-bottom: 1rem;
+}
+
+/* Section heading — LG */
+.heading-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: var(--white);
+  text-transform: uppercase;
+  text-shadow: var(--text-shadow-display);
+  margin-bottom: 0.6rem;
+}
+
+/* Subtitle */
+.subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 2vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--light);
+  text-shadow: var(--text-shadow-hero);
+}
+
+/* Body text */
+.body-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  font-weight: 500;
+  line-height: 1.9;
+  color: var(--white); /* White instead of dim for better readability over images */
+  text-shadow: var(--text-shadow-body);
+  margin-top: 0.8rem;
+}
+.body-text--center { text-align: center; }
+
+/* Gold rule divider */
+.gold-rule {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  margin: 1.5rem 0; box-shadow: 0 0 10px rgba(212,175,55,0.4);
+}
+.gold-rule--center { margin-left: auto; margin-right: auto; }
+.gold-rule--wide { width: 80px; margin-bottom: 2rem; }
+
+/* ============================================================
+   STATS GRID
+   ============================================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 2rem;
+  margin-top: 2.5rem;
+}
+
+.stat {
+  display: flex; flex-direction: column;
+  padding-left: 1.2rem;
+  border-left: 2px solid rgba(212,175,55,0.6);
+  position: relative;
+}
+.stat::before {
+  content: ''; position: absolute; left:-4px; top:50%; transform:translateY(-50%);
+  width: 6px; height: 20px; background: var(--accent); box-shadow: 0 0 10px var(--accent);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 800; color: var(--white); line-height: 1;
+  text-shadow: var(--text-shadow-display);
+}
+
+.stat-unit {
+  font-size: clamp(0.65rem, 1.2vw, 0.85rem); font-weight: 600;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--accent); margin-top: 0.4rem; text-shadow: 0 2px 10px rgba(0,0,0,1);
+}
+
+.stat-label {
+  font-size: clamp(0.6rem, 0.9vw, 0.75rem); font-weight: 500;
+  letter-spacing: 0.1em; color: var(--light); margin-top: 0.2rem; text-shadow: 0 2px 10px rgba(0,0,0,1);
+}
+
+/* ============================================================
+   FEATURE PILLS
+   ============================================================ */
+.feature-pills {
+  display: flex; flex-wrap: wrap; gap: 0.8rem;
+  justify-content: center; margin-top: 2rem;
+}
+
+.pill {
+  font-size: clamp(0.6rem, 1vw, 0.75rem); font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--white); padding: 0.7rem 1.4rem;
+  border: 1px solid rgba(212,175,55,0.4); border-radius: 999px;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  text-shadow: 0 2px 10px rgba(0,0,0,1);
+}
+
+/* ============================================================
+   QUOTE BLOCK
+   ============================================================ */
+.quote-block {
+  margin-top: 2.5rem; padding-left: 2rem;
+  border-left: 2px solid var(--accent);
+  position: relative;
+}
+
+.quote-mark {
+  font-family: var(--font-display); font-size: 5rem; line-height: 0;
+  color: var(--accent); position: absolute; left: -15px; top: 15px; opacity: 0.8;
+  text-shadow: 0 2px 20px rgba(212,175,55,0.4);
+}
+
+.quote-text {
+  font-family: var(--font-display); font-style: italic;
+  font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 500; line-height: 1.6;
+  color: var(--white); text-shadow: var(--text-shadow-display); padding-top: 10px;
+}
+
+.quote-author {
+  display: block; font-family: var(--font-body);
+  font-size: clamp(0.65rem, 1vw, 0.8rem); font-weight: 500;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent);
+  margin-top: 1.2rem; text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+}
+
+/* ============================================================
+   CTA BUTTONS (Footer)
+   ============================================================ */
+.cta-group {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1.5rem; margin-top: 3rem;
+  pointer-events: auto; /* Buttons are clickable */
+}
+
+.cta-button {
+  font-family: var(--font-body); font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+  font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+  text-decoration: none; color: var(--bg);
+  background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  padding: 1rem 2.5rem; border: none; border-radius: 4px;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out);
+  cursor: none; /* Rely on custom cursor */
+}
+
+.cta-button--outline {
+  background: transparent; color: var(--white);
+  border: 1px solid rgba(212,175,55,0.6);
+}
+
+.copyright {
+  font-size: 0.65rem; font-weight: 400; letter-spacing: 0.15em;
+  color: var(--dim); margin-top: 4rem; text-align: center;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(30px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%   { top:-100%; }
+  50%  { top:100%; }
+  100% { top:100%; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:768px) {
+  .section-inner--left, .section-inner--right { justify-content: center; }
+  .floating-text { text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .floating-text .gold-rule { margin-left: auto; margin-right: auto; }
+  .stats-grid { grid-template-columns: repeat(2,1fr); gap:1rem; margin-top: 1.5rem; }
+  .cta-group { flex-direction:column; gap:1rem; }
+  .quote-block { padding-left: 0; border: none; }
+  .quote-mark { left: 50%; top: -30px; transform: translateX(-50%); }
+  /* Fallback cursor for mobile as hardware is best for touch */
+  body, a, button { cursor: auto; }
+  #cursor, #cursor-follower { display: none; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+}

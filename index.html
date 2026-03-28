@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <title>Rolls-Royce Engine Experience | Precision. Power. Perfection.</title>
+  <meta name="description" content="An immersive scroll-driven cinematic experience showcasing the legendary Rolls-Royce engine — precision engineering meets luxury craftsmanship.">
+  <meta name="keywords" content="Rolls-Royce, engine, luxury, cinematic, experience, engineering, precision">
+  <meta name="author" content="Rolls-Royce Experience Studio">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Rolls-Royce Engine Experience">
+  <meta property="og:description" content="Scroll through precision engineering — a cinematic journey into the heart of Rolls-Royce power.">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       CUSTOM LUXURY CURSOR
+       ============================================================ -->
+  <div id="cursor"></div>
+  <div id="cursor-follower"></div>
+
+  <!-- ============================================================
+       LOADING SCREEN
+       ============================================================ -->
+  <div id="loader">
+    <div class="loader-brand">Rolls-Royce</div>
+    <div class="loader-bar-wrapper">
+      <div class="loader-bar-fill" id="loader-fill"></div>
+    </div>
+    <div class="loader-percentage" id="loader-percent">0%</div>
+    <div class="loader-subtitle">Loading Experience</div>
+  </div>
+
+  <!-- SCROLL PROGRESS BAR -->
+  <div id="scroll-progress"></div>
+
+  <!-- ============================================================
+       STATIC HERO (Pre-Animation)
+       ============================================================ -->
+  <header id="hero-block" class="static-section">
+    <div class="hero-content">
+      <span class="eyebrow eyebrow--hero">Experience the Legacy</span>
+      <h1 class="heading-xl heading--hero">ROLLS-ROYCE<br>ENGINE EXPERIENCE</h1>
+      <p class="subtitle subtitle--hero">Precision. Power. Perfection.</p>
+    </div>
+    <div class="scroll-indicator">
+      <span class="scroll-hint-text">Scroll to Explore</span>
+      <div class="scroll-hint-line"></div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       ANIMATION TRACK (Scrolljacking space)
+       ============================================================ -->
+  <main id="animation-track" class="animation-track">
+    <div class="animation-sticky">
+      <!-- CANVAS — Frame Renderer -->
+      <canvas id="frame-canvas"></canvas>
+
+      <!-- VIGNETTE OVERLAY -->
+      <div id="vignette"></div>
+
+      <!-- ============================================================
+           CONTENT SECTIONS — Sticky Overlays (No boxes, pure text)
+           ============================================================ -->
+      
+      <!-- INTRO STORY -->
+      <section id="section-intro" class="content-section" data-section="intro">
+        <div class="section-inner section-inner--left">
+          <div class="floating-text">
+            <span class="eyebrow">Since 1904</span>
+            <h2 class="heading-lg">ENGINEERED TO<br>PERFECTION</h2>
+            <div class="gold-rule"></div>
+            <p class="body-text">
+              Beneath the surface lies a symphony of precision engineering. Each component
+              is crafted to deliver seamless power, silent strength, and unmatched refinement.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENGINE FOCUS -->
+      <section id="section-engine" class="content-section" data-section="engine">
+        <div class="section-inner section-inner--right">
+          <div class="floating-text">
+            <span class="eyebrow">The Powertrain</span>
+            <h2 class="heading-lg">THE HEART<br>OF POWER</h2>
+            <div class="gold-rule"></div>
+            <p class="body-text">
+              A twin-turbocharged V12 engine delivering effortless acceleration.
+              Designed not just for speed, but for absolute smoothness and control.
+            </p>
+
+            <div class="stats-grid">
+              <div class="stat">
+                <span class="stat-value">571</span>
+                <span class="stat-unit">BHP</span>
+                <span class="stat-label">Peak Power</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value">850</span>
+                <span class="stat-unit">Nm</span>
+                <span class="stat-label">Torque</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value">5.2</span>
+                <span class="stat-unit">sec</span>
+                <span class="stat-label">0–100 km</span>
+              </div>
+              <div class="stat">
+                <span class="stat-value">250</span>
+                <span class="stat-unit">km/h</span>
+                <span class="stat-label">Top Speed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVERY DETAIL MATTERS -->
+      <section id="section-detail" class="content-section" data-section="detail">
+        <div class="section-inner">
+          <div class="floating-text floating-text--center">
+            <span class="eyebrow">Uncompromising Quality</span>
+            <h2 class="heading-lg">EVERY DETAIL<br>MATTERS</h2>
+            <div class="gold-rule gold-rule--center"></div>
+            <p class="body-text body-text--center">
+              From the smallest bolt to the most complex mechanism, every detail is
+              engineered to perfection — ensuring reliability, performance, and luxury.
+            </p>
+            <div class="feature-pills">
+              <span class="pill">Hand-Stitched Leather</span>
+              <span class="pill">Starlight Headliner</span>
+              <span class="pill">Spirit of Ecstasy</span>
+              <span class="pill">Aluminum Spaceframe</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PURE LUXURY -->
+      <section id="section-luxury" class="content-section" data-section="luxury">
+        <div class="section-inner section-inner--left">
+          <div class="floating-text">
+            <span class="eyebrow">The Experience</span>
+            <h2 class="heading-lg">PURE LUXURY<br>IN MOTION</h2>
+            <div class="gold-rule"></div>
+            <p class="body-text">
+              A driving experience defined by silence, strength, and sophistication.
+              This is not just engineering — it is art in motion.
+            </p>
+            <blockquote class="quote-block">
+              <span class="quote-mark">"</span>
+              <p class="quote-text">Take the best that exists and make it better.</p>
+              <cite class="quote-author">— Sir Henry Royce, Co-Founder</cite>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       STATIC FOOTER (Post-Animation)
+       ============================================================ -->
+  <footer id="footer-block" class="static-section static-section--footer">
+    <div class="footer-content">
+      <div class="gold-rule gold-rule--wide gold-rule--center"></div>
+      <span class="eyebrow">The Journey Continues</span>
+      <h2 class="heading-xl">EXPERIENCE THE<br>EXTRAORDINARY</h2>
+      <p class="body-text body-text--center">
+        Where extraordinary becomes the standard.
+      </p>
+      <div class="cta-group">
+        <a href="https://www.rolls-roycemotorcars.com" target="_blank" rel="noopener" class="cta-button">Explore More</a>
+        <button class="cta-button cta-button--outline" id="replay-btn">Replay Experience</button>
+      </div>
+      <p class="copyright">© 2026 Rolls-Royce Motor Cars. An immersive digital experience.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
